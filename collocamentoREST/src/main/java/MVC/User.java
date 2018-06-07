@@ -8,6 +8,10 @@ public class User {
 	private String lavoro_attuale = "";	
 	private String lavoro_precedente = "";
 	
+	public User(){
+		cfis="";
+	}
+	
 	public User(String nome, String cognome, String cfis, String data_nascita, String lavoro_attuale,
 			String lavoro_precedente) {
 		super();
