@@ -139,7 +139,7 @@ morecomment=[s]{--}
 \begin_body
 
 \begin_layout Standard
-Il tutoriale prevede la creazione di tre RESTful web services.
+Il progetto prevede la creazione di tre RESTful web services.
  In particolare sono stati realizzati i seguenti servizi web:
 \end_layout
 
@@ -162,12 +162,12 @@ I servizi sono tra di loro indipendenti e sono stati implementanti in Java,
  
 \end_layout
 
-\begin_layout Subsection
-Servizio Pagine Bianche
+\begin_layout Section
+Web Service Pagine Bianche
 \end_layout
 
 \begin_layout Standard
-Il servizio 
+Il web service 
 \begin_inset Quotes eld
 \end_inset
 
@@ -175,8 +175,222 @@ Pagine Bianche
 \begin_inset Quotes erd
 \end_inset
 
- viene interrogato al fine di reperire delle informazioni su un utente riguardat
-i l'indirizzo di abitazione e i recapiti telefonici.
+ espone due servizi:
+\end_layout
+
+\begin_layout Itemize
+Dato il codice fiscale restituisce tutte le informazioni di un dato utente:
+ tale servizio viene richiamato tramite il metodo GET di una richiesta HTTP
+ con il seguente path /utente/CodiceFiscale.
+\end_layout
+
+\begin_layout Itemize
+Aggiunge un utente all'elenco date le informazioni su quest'ultimo: tale
+ servizio viene richiamato tramite il metodo POST di una richiesta HTTP
+ con il seguente path /aggiungi , specificando il body in formato JSON.
+\end_layout
+
+\begin_layout Standard
+Le informazioni associate ad un utente sono le seguenti:
+\end_layout
+
+\begin_layout Itemize
+Codice Fiscale
+\end_layout
+
+\begin_layout Itemize
+nome
+\end_layout
+
+\begin_layout Itemize
+cognome
+\end_layout
+
+\begin_layout Itemize
+indirizzo
+\end_layout
+
+\begin_layout Itemize
+numero fisso
+\end_layout
+
+\begin_layout Itemize
+cellulare
+\end_layout
+
+\begin_layout Itemize
+email
+\end_layout
+
+\begin_layout Section
+Web Service ASL
+\end_layout
+
+\begin_layout Standard
+l web service 
+\begin_inset Quotes eld
+\end_inset
+
+ASL
+\begin_inset Quotes erd
+\end_inset
+
+ espone due servizi:
+\end_layout
+
+\begin_layout Itemize
+Dato il codice fiscale restituisce tutte le informazioni di un dato utente:
+ tale servizio viene richiamato tramite il metodo GET di una richiesta HTTP
+ con il seguente path /user/CodiceFiscale.
+\end_layout
+
+\begin_layout Itemize
+Aggiunge un utente all'elenco date le informazioni su quest'ultimo: tale
+ servizio viene richiamato tramite il metodo POST di una richiesta HTTP
+ con il seguente path /user/add , specificando il body in formato JSON.
+\end_layout
+
+\begin_layout Standard
+Le informazioni associate ad un utente sono le seguenti:
+\end_layout
+
+\begin_layout Itemize
+Codice Fiscale
+\end_layout
+
+\begin_layout Itemize
+nome
+\end_layout
+
+\begin_layout Itemize
+cognome
+\end_layout
+
+\begin_layout Itemize
+sesso
+\end_layout
+
+\begin_layout Itemize
+data di nascita
+\end_layout
+
+\begin_layout Itemize
+Medico di base
+\end_layout
+
+\begin_layout Section
+Web Service Collocamento
+\end_layout
+
+\begin_layout Standard
+Il web service 
+\begin_inset Quotes eld
+\end_inset
+
+Collocamento
+\begin_inset Quotes erd
+\end_inset
+
+ espone tre servizi:
+\end_layout
+
+\begin_layout Itemize
+Dato il codice fiscale restituisce tutte le informazioni di un dato utente:
+ tale servizio viene richiamato tramite il metodo GET di una richiesta HTTP
+ con il seguente path /users/CodiceFiscale.
+\end_layout
+
+\begin_layout Itemize
+Aggiunge un utente all'elenco date le informazioni su quest'ultimo: tale
+ servizio viene richiamato tramite il metodo POST di una richiesta HTTP
+ con il seguente path /users/add , specificando il body in formato JSON.
+\end_layout
+
+\begin_layout Itemize
+Restituisce la lista di tutti gli utenti: tale servizio viene richiamato
+ tramite il metodo GET di una richiesta HTTP con il seguente path /users.
+\end_layout
+
+\begin_layout Standard
+Le informazioni associate ad un utente sono le seguenti:
+\end_layout
+
+\begin_layout Itemize
+Codice Fiscale
+\end_layout
+
+\begin_layout Itemize
+nome
+\end_layout
+
+\begin_layout Itemize
+cognome
+\end_layout
+
+\begin_layout Itemize
+data di nascita
+\end_layout
+
+\begin_layout Itemize
+lavoro attuale
+\end_layout
+
+\begin_layout Itemize
+lavoro precedente
+\end_layout
+
+\begin_layout Section
+Scopo
+\end_layout
+
+\begin_layout Standard
+Dopo aver creato i tre Rest web services, lo scopo del progetto consiste
+ nell'orchestrarli in maniera opportuna.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename img/servizi1.PNG
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Innanzitutto i web services sono stati deployati con Docker.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename img/servizi2.PNG
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Infine, sono stati ochestrati con conductor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename img/servizi3.PNG
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nei capitoli successivi, sono spiegati del dettaglio l'implementazione,
+ il deploy e l'orchestrazione dei web services realizzati, mediante la creazione
+ di alcuni workflow di esempio.
  
 \end_layout
 
