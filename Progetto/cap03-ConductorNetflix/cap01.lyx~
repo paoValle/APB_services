@@ -582,7 +582,7 @@ Wait
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+task che rimane nello stato di IN_PROGRESS fino ad un trigger esterno
 \end_layout
 
 \end_inset
@@ -602,7 +602,7 @@ HTTP
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+usato per chiamare microservizi tramite richieste HHTP
 \end_layout
 
 \end_inset
@@ -668,6 +668,10 @@ Di seguito è mostrato uno schema dei possibili stati di un task o di un
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 

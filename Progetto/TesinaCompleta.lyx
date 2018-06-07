@@ -393,6 +393,21 @@ filename "cap02 - Springboot e Docker/cap02.lyx"
 
 \end_layout
 
+\begin_layout Chapter
+Netflix Conductor
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand input
+preview true
+filename "cap03-ConductorNetflix/cap01.lyx"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 
 \lang american

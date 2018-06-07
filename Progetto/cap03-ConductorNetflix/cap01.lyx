@@ -322,11 +322,7 @@ copiare nella directory conductor-master/server/build/libs il file scaricato
 \end_layout
 
 \begin_layout Itemize
-eseguire il comando 
-\series bold
-copy ./server/build/libs/conductor-server-*-all.jar /app/libs
-\series default
- posizionandosi nella directory conductor-master 
+installare docker-compose (sudo apt-get install docker-compose);
 \end_layout
 
 \begin_layout Itemize
@@ -343,13 +339,13 @@ cd docker
 \begin_layout Itemize
 
 \series bold
-docker-compose build (attendere la terminazione)
+sudo docker-compose build (attendere la terminazione)
 \end_layout
 
 \begin_layout Itemize
 
 \series bold
-docker-compose up
+sudo docker-compose up
 \end_layout
 
 \end_deeper
