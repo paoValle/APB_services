@@ -1,0 +1,1428 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass book
+\begin_preamble
+\usepackage{listings,xcolor,courier,bookmark}
+\usepackage{listingsutf8}
+\definecolor{darkblue}{named}{blue}
+\definecolor{darkred}{named}{red}
+\definecolor{grau}{named}{gray}
+\let\Righttorque\relax
+\lstset{
+captionpos=b,
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+keywordstyle=\color{darkblue},
+stringstyle=\color{darkred},
+extendedchars=true,
+basicstyle=\small\ttfamily,
+showstringspaces=false,
+tabsize=2,
+numbers=left,
+numberstyle=\tiny,
+breakautoindent  = true,
+breakindent      = 2em,
+breaklines       = true,
+postbreak        = ,
+prebreak         = \raisebox{-.8ex}[0ex][0ex]{\Righttorque},
+showspaces=false, 
+showtabs=false, 
+showstringspaces=false,
+language=VHDL,
+frame=single,
+morecomment=[s]{--}
+}
+
+
+\renewcommand*{\lstlistingname}{Codice Componente}
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhead{} 
+\fancyfoot{} 
+
+\fancyhead[RO,LE]{\bfseries \leftmark}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Tesina in ASE: Architetture dei Sistemi di Elaborazione}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\date{}
+\cfoot{}
+\usepackage{eso-pic,graphicx}
+\makeatletter
+\newcommand\BackgroundPicture[2]{
+\setlength{\unitlength}{1pt}
+\put(0,\strip@pt\paperheight){
+\parbox[t][\paperheight]{\paperwidth}{
+\vfill
+\centering\includegraphics[angle=#2]{#1}
+\vfill
+}
+}
+}
+\makeatother
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language italian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2.5cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+REST Services
+\end_layout
+
+\begin_layout Standard
+Nati in contrapposizione, inizialmente, ai web services SOAP, i REST services
+ si sono ritagliati sempre di più una fetta di mercato importante, tanto
+ da essere oggi preferiti in molte situazioni.
+ La leggerezza dell'architettura e i framework nati che abilitano al loro
+ uso, sono stati i volano della loro diffusione.
+ Negli scorsi anni erano spesso preferiti ai 
+\begin_inset Quotes eld
+\end_inset
+
+cugini
+\begin_inset Quotes erd
+\end_inset
+
+ SOAP, trend che oggi invece sta andando a scemare, data la consapevolezza
+ che le due facce della stessa medaglia possono coesistere in un sistema,
+ e non schiacciarsi a vicenda.
+ Il fulcro del pensiero di tale architettura, nata da un lavoro di tesi
+ del promotore, è il concetto di risorsa, che viene intesa come qualcosa
+ che non deve essere solo al centro dei modelli dei database del sistema,
+ ma anche ciò che un utente al di fuori deve vedere e poter accedere per
+ sfruttare i servizi offerti.
+ Su ogni risorsa, in particolare, deve essere possibile agire tramite le
+ quattro operazioni classiche CRUD, create read update e delete.
+ La sinergia con i metodi HTTP e tale protocollo, snello e preesistente,
+ ha fatto si che le quattro operazioni venissero mappate sui quattro metodi
+ di richiesta GET, POST, PUT e DELETE.
+ Il poco overhead caratterizzato da HTTP, e la sua già ampia diffusione
+ ha permesso ai developer di approcciarsi in maniera semplice, veloce ed
+ indolore all'architettura REST.
+\end_layout
+
+\begin_layout Section
+Springboot 
+\end_layout
+
+\begin_layout Standard
+Un ruolo importante in questo panorame lo hanno giocato i framework.
+ Uno di questi, per linguaggio Java, affermatosi di recente è SpringBoot.
+ Tramite un sistema di annotazioni, permette in pochi passi di mettere su
+ una serie di servizi REST robusti ed efficiente, così da realizzare API
+ e route del proprio sistema in un tempo brevissimo.
+ Ma springboot non è solo REST services, infatti esso permette di:
+\end_layout
+
+\begin_layout Itemize
+avviare in pochi secondi un proprio progetto tramite Spring Initializr;
+\end_layout
+
+\begin_layout Itemize
+costruire qualsiasi architettura: REST API, WebSocket, Web, Streaming, Tasks,
+ e altro;
+\end_layout
+
+\begin_layout Itemize
+sicurezza semplificata;
+\end_layout
+
+\begin_layout Itemize
+ampio supporto per database SQL e NoSQL;
+\end_layout
+
+\begin_layout Itemize
+supporto Runtime incluso (ad es.
+ Tomcat, Jetty, e Undertow)
+\end_layout
+
+\begin_layout Itemize
+strumenti a supporto del developer per aumentarne la produttività, come
+ live reload e auto restart 
+\end_layout
+
+\begin_layout Itemize
+dipendenze ben realizzate che funzionano adeguatamente;
+\end_layout
+
+\begin_layout Itemize
+feature pronte per la produzione, come tracing, metrics e health status;
+\end_layout
+
+\begin_layout Itemize
+compatibilità con i propri IDE preferiti: Spring Tool Suite, IntelliJ IDEA
+ e NetBeans.
+\end_layout
+
+\begin_layout Standard
+Insomma, SpringBoot è un vero e proprio coltellino svizzero che supporta
+ il developer a 360°, aiutandolo in ogni fase di sviluppo, deploy e manutenzione
+ di un sistema, anche complesso.
+ Tramite esso, uno sviluppatore può metter su un'architettura con davvero
+ poco sforzo.
+\end_layout
+
+\begin_layout Section
+Docker
+\end_layout
+
+\begin_layout Standard
+In tale scenario, come si posizione Docker? Partiamo da un quoting preso
+ dal loro sito:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Docker is the company driving the container movement and the only container
+ platform provider to address every application across the hybrid cloud.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il concetto di container era già ampiamente diffuso su linux fin dalle sue
+ origini.
+ L'idea è quella di creare un ambiente di esecuzione indipendente dalla
+ macchina host, isolato, e comprensivo di tutto ciò che è necessario per,
+ ad esempio, eseguire una determinata applicazione.
+ Per comprendere meglio tale concetto, possiamo fare un parallelismo con
+ quello più consolidato di virtual machine: un container è come una vm in
+ esecuzione sul nostro sistema, ma altamente più leggera e semplice da avviare,
+ cancellare, clonare e deployare.
+ Questo vuol dire che Docker è un diretto concorrente o, addirittura, più
+ efficiente di una vm? Assolutamente no, perchè vi è ovviamente un tradeoff:
+ salvo alcune eccezioni, tutti i container avviati su una stessa macchina
+ condividono il kernel, e altre parti, del sistema operativo sottostante,
+ il che si traduce in una flessibilità di gran lunga inferiore ad una VM.
+ Dunque, possiamo affermare che Docker non è una panacea contro tutti i
+ mali dell'uso di una VM, ma una valida alternativa in determinati scenari,
+ che oggi stanno diventando sempre più diffusi e che stanno portando tale
+ piattaforma sempre più in auge.
+ Un container Docker è possibile vederlo come un'istanza di una cosiddetta
+ immagine, che viene riempita con tutto ciò il necessario per mandarla in
+ esecuzione e offrire determinate funzionalità.
+\end_layout
+
+\begin_layout Section
+Tutorial
+\end_layout
+
+\begin_layout Standard
+In questa sezione andremo ad avviare la nostra prima applicazione springboot,
+ e la andremo a deployare su un container Docker.
+ Grazie a dei boilerplate già pronti e messi a disposizione dalla community,
+ il tutto sarà possibile farlo in pochissimi minuti, permettendoci così
+ di concentrarci sulla logica dell'applicazione, piuttosto che su operazioni
+ di contorno.
+\end_layout
+
+\begin_layout Subsection
+Requisiti
+\end_layout
+
+\begin_layout Standard
+Per arrivare in fondo a questa guida, è necessario: 
+\end_layout
+
+\begin_layout Itemize
+Qualche minuto;
+\end_layout
+
+\begin_layout Itemize
+Un IDE a scelta (suggerimento: Eclipse);
+\end_layout
+
+\begin_layout Itemize
+JDK 1.8 or later;
+\end_layout
+
+\begin_layout Itemize
+Gradle 4+ or Maven 3.2+ (la presente guida seguirà l’uso di Gradle, ma i
+ passaggi sono simili);
+\end_layout
+
+\begin_layout Itemize
+Sistema Operativo Linux;
+\end_layout
+
+\begin_layout Itemize
+docker (installabile seguendo la guida online del software).
+\end_layout
+
+\begin_layout Subsection
+Download del boilerplate
+\end_layout
+
+\begin_layout Standard
+Per realizzare questa guida adopereremo un boilerplate già pronto, nel quale
+ dovremo solamente mettere il nostro codice.
+ Per scaricarlo, abbiamo due alternative.
+ La prima è clonare la repo su github messa a disposizione da springboot
+ tramite il comando:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+git clone https://github.com/spring-guides/gs-spring-boot-docker.git
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se tale operazione dovesse fallire (nella nostra esperienza, a volte git
+ diceva che non avevamo i permessi per accedere alla repo), si può procedere
+ con il download dei file dalla repo github tramite browser.
+ Il file sarà uno zip, che potrà poi essere scompattate sul disco (tramite
+ comando unzip).
+ Ultima nota, per evitare problemi di permessi futuri, si consiglia di dare
+ il seguente comando sulla cartella unzippata:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sudo chmod 777 gs-spring-boot-docker -R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+per essere sicuri di poter operare liberamente.
+\end_layout
+
+\begin_layout Subsection
+Realizzazione del servizio
+\end_layout
+
+\begin_layout Standard
+Una volta scaricato tutto il materiale, ciò che ci interessa è solamente
+ la cartella complete.
+ Il resto è possibile eliminarlo tranquillamente.
+ Questa cartella ha pre-impostati sia gli script gradle e maven, per la
+ gestione di dipendenze e compilazione, che il Dockerfile per poter deployare
+ il servizio.
+ Inoltre, vi è presente in springboot una versione leggera di Tomcat, per
+ cui non servirà altro per avviare il tutto.
+ La cartella complete è possibile importarla nel nostro IDE preferito come
+ 
+\begin_inset Quotes eld
+\end_inset
+
+gradle project
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Una volta fatto ciò, possiamo eliminare dalla cartella src tutta la cartella
+ test, che si riferisce al codice di default presente.
+ Inoltre, possiamo procedere ad eliminare la cartella 
+\begin_inset Quotes eld
+\end_inset
+
+hello
+\begin_inset Quotes erd
+\end_inset
+
+ in 
+\begin_inset Quotes eld
+\end_inset
+
+src/java
+\begin_inset Quotes erd
+\end_inset
+
+, che contiene il codice del progetto di esempio.
+ Ora possiamo procedere a creare i nostri package e il nostro codice sotto
+ la directory src/java.
+ Nella successiva sezione vediamo le parti salienti di una applicazione
+ SpringBoot e alcune annotazioni.
+ Si rimanda al sito SpringBoot nelle referenze per una guida completa in
+ merito.
+\end_layout
+
+\begin_layout Subsection
+La nostra prima Applicazione SpringBoot
+\end_layout
+
+\begin_layout Standard
+Un'applicazione SpringBoot è caratterizzata da una classe entry point, realizzat
+a tramite annotazioni.
+ Vediamone qui un esempio:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+package CollocamentoREST;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.springframework.boot.SpringApplication;
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@SpringBootApplication
+\end_layout
+
+\begin_layout Plain Layout
+
+public class SpringBootRestApplication {
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static void main(String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		SpringApplication.run(SpringBootRestApplication.class, args);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Qui possiamo notare un main, necessario come entry point all'applicazione,
+ formato da una sola riga, che carica il servizio.
+ L'annotazione @SpringBootApplication caratterizza tale classe come entry
+ point.
+\end_layout
+
+\begin_layout Standard
+Volendo seguire un pattern MVC per la realizzazione del servizio, possiamo
+ posizionare questa classe nel pckage Controller (nel nostro esempio chiamato
+ CollocamentoREST), in cui inseriamo anche la classe che presenta le route
+ delle nostre API:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+package CollocamentoREST;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.List;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import org.springframework.web.bind.annotation.*;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import MVC.User;
+\end_layout
+
+\begin_layout Plain Layout
+
+import MVC.UserDAO;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@RestController
+\end_layout
+
+\begin_layout Plain Layout
+
+public class UserController {
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	private UserDAO udao = new UserDAO();
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	@GetMapping("/users/all")
+\end_layout
+
+\begin_layout Plain Layout
+
+	public List<User> retrieveAllStudents() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return udao.getUsers();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@GetMapping("/users/{cf}")
+\end_layout
+
+\begin_layout Plain Layout
+
+	public User getUserById(@PathVariable("cf") String cf) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return udao.getUterByCf(cf);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	@PostMapping("/users/add")
+\end_layout
+
+\begin_layout Plain Layout
+
+	public boolean addUser(@RequestBody User user) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return udao.addUser(user);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Da questo esempio notiamo:
+\end_layout
+
+\begin_layout Itemize
+@RestController: annotazione per definire il Controller del nostro servizio;
+\end_layout
+
+\begin_layout Itemize
+@GetMapping(
+\begin_inset Quotes eld
+\end_inset
+
+...
+\begin_inset Quotes erd
+\end_inset
+
+): annotazione per definire una route del nostro servizio, che risponderà
+ con il codice del metodo annotato in caso di richiesta GET (analogamente
+ @PostMapping per una POST);
+\end_layout
+
+\begin_layout Itemize
+senza indicare nulla di più, l'output prodotto sarà json, altrimenti modificabil
+e con una apposita annotazione;
+\end_layout
+
+\begin_layout Itemize
+@RequestBody, per prendere il body della richiesta e mapparlo direttamente
+ ad un oggetto del nostro model, senza aggiungere alcun che.
+ Il body dovrà essere un json con i campi di pari nome di quello della classe
+ User del Model.
+ Provvederà SpringBoot a fare il mapping;
+\end_layout
+
+\begin_layout Itemize
+@PathVariable: annotazione per prendere una variabile nell'url della richiesta,
+ riconoscibile tramite le {} che la circondano.
+\end_layout
+
+\begin_layout Standard
+Il resto, inserito qui nel package MVC sono classi normali, classiche del
+ Java, senza annotazioni ne altro.
+ Come vediamo, in maniera facile e veloce (e soprattutto indolore) il servizio
+ è stato realizzato.
+ Riportiamo qui le altre due classi presenti per completezza:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+package MVC;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.ArrayList;
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.HashMap;
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.List;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class UserDAO {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private HashMap<String, User> users = new HashMap<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+	UserDAO instance = null;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public UserDAO getInstance() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (instance==null)
+\end_layout
+
+\begin_layout Plain Layout
+
+			instance = new UserDAO();	
+\end_layout
+
+\begin_layout Plain Layout
+
+		return instance;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public UserDAO() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		users.put("VLLTPL947", new User("Paolo", "Valletta", "VLLTPL947", "25/02/1994",
+ "Impiegato", "Disoccupato"));
+\end_layout
+
+\begin_layout Plain Layout
+
+		users.put("GLLNTN94", new User("Antonio", "Galli", "GLLNTN94", "11/05/1994",
+ "Manager", "Disoccupato"));
+\end_layout
+
+\begin_layout Plain Layout
+
+		users.put("GRVMHL94", new User("Michela", "Gravina", "GRVMHL94", "30/11/1994",
+ "Prof.re Ordinario", "Disoccupato"));
+\end_layout
+
+\begin_layout Plain Layout
+
+		users.put("VFGVN94", new User("Virginia", "Venezia", "VFGVN94", "02/08/1994",
+ "Soldato Semplice", "Disoccupato"));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public List<User> getUsers() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return new ArrayList<User>(users.values());
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public User getUterByCf(String cf) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return (User)users.get(cf);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public boolean addUser(User u) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (users.containsKey(u.getCfis()))
+\end_layout
+
+\begin_layout Plain Layout
+
+			return false;
+\end_layout
+
+\begin_layout Plain Layout
+
+		else
+\end_layout
+
+\begin_layout Plain Layout
+
+			users.put(u.getCfis(), u);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return true;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+package MVC;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class User {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String nome = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String cognome = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String cfis = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String data_nascita = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String lavoro_attuale = "";	
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String lavoro_precedente = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public User(){
+\end_layout
+
+\begin_layout Plain Layout
+
+		cfis="";
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public User(String nome, String cognome, String cfis, String data_nascita,
+ String lavoro_attuale,
+\end_layout
+
+\begin_layout Plain Layout
+
+			String lavoro_precedente) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		super();
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.nome = nome;
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.cognome = cognome;
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.cfis = cfis;
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.data_nascita = data_nascita;
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.lavoro_attuale = lavoro_attuale;
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.lavoro_precedente = lavoro_precedente;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getNome() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return nome;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setNome(String nome) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.nome = nome;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getCognome() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return cognome;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setCognome(String cognome) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.cognome = cognome;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getCfis() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return cfis;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setCfis(String cfis) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.cfis = cfis;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getData_nascita() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return data_nascita;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setData_nascita(String data_nascita) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.data_nascita = data_nascita;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getLavoro_attuale() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return lavoro_attuale;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setLavoro_attuale(String lavoro_attuale) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.lavoro_attuale = lavoro_attuale;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public String getLavoro_precedente() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		return lavoro_precedente;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void setLavoro_precedente(String lavoro_precedente) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.lavoro_precedente = lavoro_precedente;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+NOTA: la classe UserDAO è in realtà un Singleton che ha dati dummy inseriti
+ di default, che conserva per tutta l'esecuzione del servizio.
+ La classe User presenta un costruttore senza parametri necessario per fare
+ funzionare il mapping del RequestBody fatto da SpringBoot.
+\end_layout
+
+\begin_layout Subsection
+Esecuzione del servizio
+\end_layout
+
+\begin_layout Standard
+Scritto il codice, siamo pronti per provare ed avviare il nostro servizio.
+ Basterà semplicemente fare tasto destro nell'IDE sulla classe SpringBootRestApp
+lication e ciccare Run As/Java Application.
+ Nella console potremo vedere l'avvio di springboot e del tomcat integrato.
+ Una volta completato, potremo testare le nostre route, ad esempio localhost:808
+0/users/all (il servizio realizzato nel nostro codice è, in realtà, sulla
+ porta 9090).
+\end_layout
+
+\begin_layout Subsection
+Personalizzazione del servizio
+\end_layout
+
+\begin_layout Standard
+Lasciando gli script di gradle di default, il servizio e il docker creato
+ avranno dei nomi di default, e soprattutto saranno lanciati sulla porta
+ 8080.
+ Se si vuole avere più servizi, sarà innanzitutto necessario modificare
+ tale porta.
+ Per farlo, basterà aprire il file src/main/resources/application.yml e modificar
+e la riga 
+\begin_inset Quotes eld
+\end_inset
+
+port:
+\begin_inset Quotes erd
+\end_inset
+
+ con ciò che si preferisce.
+ Inoltre, modificando il file build.gradle della root complete sarà possibile
+ modificare il nome che docker darà al servizio.
+ La riga da modificare è la numero 36 
+\begin_inset Quotes eld
+\end_inset
+
+name
+\begin_inset Quotes erd
+\end_inset
+
+: possiamo scrivere una qualsiasi stringa, seppur senza lettere maiuscole
+ o spazi.
+\end_layout
+
+\begin_layout Subsection
+Deploy su docker
+\end_layout
+
+\begin_layout Standard
+Per realizzare l'immagine docker, lanciare il container e avviare il servizio,
+ possiamo posizionarci da shell nella root del progetto e dare i seguenti
+ comandi:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sudo ./gradlew build docker
+\end_layout
+
+\begin_layout Plain Layout
+
+docker run -p 8080:8080 -t nome_container_scelto
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La prima riga prepara il container e lo aggiunge alla libreria docker, mentre
+ il secondo lo lancia, indicando la porta modificata eventualmente precedentemen
+te, e il nome dato prima nella modifica del file build.gradle.
+ Fatto ciò è tutto pronto, docker è avviato e deployato e all'indirizzo
+ localhost giusto potremo trovare il nostro servizio in esecuzione!
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\series bold
+RESTServices
+\series default
+: https://en.wikipedia.org/wiki/Representational_state_transfer)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\series bold
+SpringBoot
+\series default
+: https://spring.io/
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\series bold
+Docker:
+\series default
+ https://www.docker.com/
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\series bold
+Docker-container:
+\series default
+ https://www.docker.com/what-container
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\series bold
+Guida docker e springboot:
+\series default
+ https://spring.io/guides/gs/spring-boot-docker/
+\end_layout
+
+\end_body
+\end_document
