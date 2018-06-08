@@ -35,6 +35,41 @@ language=VHDL,
 frame=single,
 morecomment=[s]{--}
 }
+\usepackage{bera}% optional: just to have a nice mono-spaced font
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
 
 
 \renewcommand*{\lstlistingname}{Codice Componente}
@@ -212,7 +247,7 @@ Di seguito è mostrata l'architettura ad alto livello di Conductor.
 \begin_layout Standard
 Conductor segue il modello di comunicazione basato su RPC in cui i workers
  sono in esecuzione su una macchina separata dal server.
- I workers comunico con il server mediante richieste HTTP.
+ I workers comunicano con il server mediante richieste HTTP.
  
 \end_layout
 
@@ -240,7 +275,7 @@ Le Task Queues sono usate per schedulare i tasks.
 \end_layout
 
 \begin_layout Itemize
-Per la persistenza dei dati viene utilizzato Dynomite.
+Per la persistenza dei dati viene utilizzato DynomiteDB.
 \end_layout
 
 \begin_layout Standard
@@ -322,11 +357,7 @@ copiare nella directory conductor-master/server/build/libs il file scaricato
 \end_layout
 
 \begin_layout Itemize
-eseguire il comando 
-\series bold
-copy ./server/build/libs/conductor-server-*-all.jar /app/libs
-\series default
- posizionandosi nella directory conductor-master 
+installare docker-compose (sudo apt-get install docker-compose);
 \end_layout
 
 \begin_layout Itemize
@@ -343,13 +374,13 @@ cd docker
 \begin_layout Itemize
 
 \series bold
-docker-compose build (attendere la terminazione)
+sudo docker-compose build (attendere la terminazione)
 \end_layout
 
 \begin_layout Itemize
 
 \series bold
-docker-compose up
+sudo docker-compose up
 \end_layout
 
 \end_deeper
@@ -482,7 +513,7 @@ Decision
 \begin_inset Text
 
 \begin_layout Plain Layout
-Implementa uno switch..case
+Implementa uno switch case
 \end_layout
 
 \end_inset
@@ -642,7 +673,7 @@ Worker tasks
 \begin_layout Standard
 I worker tasks sono implementati dalle applicazioni ed eseguono in un ambiente
  separato dal Conductor.
- Possono essere implementanti in qualsiasi linguaggio di programmazione.
+ Possono essere implementanti in qualsiasi linguaggio di programmazione,
  comunicanco con il Conductor server tramite delle REST ASPI.
  Nel modello sono definiti 
 \begin_inset Quotes eld
@@ -656,7 +687,7 @@ SIMPLE
 \end_layout
 
 \begin_layout Standard
-Di seguito è mostrato uno schema dei possibili stati di un task o di un
+Di seguito è riportato uno schema dei possibili stati di un task o di un
  workflow.
  
 \end_layout
@@ -671,7 +702,2922 @@ Di seguito è mostrato uno schema dei possibili stati di un task o di un
 
 \end_layout
 
+\begin_layout Section
+Conductor nel nostro progetto
+\end_layout
+
+\begin_layout Subsection
+Tasks
+\end_layout
+
 \begin_layout Standard
+Come già detto in precedenza per poter realizzare un workflow è necessario
+ definire a priori i task che fanno parte di quest'ultimo.
+ In particolare nel nostro progetto sono stati definiti i seguenti task
+ per la realizzazione dei workflow:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/definizioneTask.JPG
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Tasks definiti
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+richiestaPB : tale task è stato realizzato per poter effettuare una richiesta
+ al servizio Pagine bianche.
+\end_layout
+
+\begin_layout Itemize
+richiestaAsl : tale task è stato realizzato per poter effettuare una richiesta
+ al servizio Asl.
+\end_layout
+
+\begin_layout Itemize
+richiestaCollocamento : tale task è stato realizzato per poter effettuare
+ una richiesta al servizio Collocamento.
+\end_layout
+
+\begin_layout Standard
+Di seguito sono riportati i codici JSON relativi alla realizzazione di ogni
+ task:
+\end_layout
+
+\begin_layout Standard
+Per creare i task si è utilizzata l'interfaccia grafica Swagger, in paricolare
+ i passi eseguiti sono i seguenti :
+\end_layout
+
+\begin_layout Itemize
+Collegarsi all'interfaccia Swagger localhost:8080
+\end_layout
+
+\begin_layout Itemize
+Tra le varie liste di operazioni disponibili selezionare il menù Metadata
+ Management
+\end_layout
+
+\begin_layout Itemize
+Selezionare 
+\begin_inset Quotes eld
+\end_inset
+
+Create new task definition(s)
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+[	
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "ownerApp": "Orchestrazione",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updateTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createdBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updatedBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "name": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "description": "richiesta al servizio PB",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryCount": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutSeconds": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+	      	"cf"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "outputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+		      "utente"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutPolicy": "TIME_OUT_WF",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryLogic": "FIXED",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryDelaySeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "responseTimeoutSeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "concurrentExecLimit": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputTemplate": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+[
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "ownerApp": "Orchestrazione",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updateTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createdBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updatedBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "name": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "description": "richiesta al servizio Asl",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryCount": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutSeconds": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+	      	"cf"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "outputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+	      	"utente"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutPolicy": "TIME_OUT_WF",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryLogic": "FIXED",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryDelaySeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "responseTimeoutSeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "concurrentExecLimit": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputTemplate": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+[
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "ownerApp": "Orchestrazione",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updateTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "createdBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "updatedBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "name": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "description": "richiesta al servizio Collocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryCount": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutSeconds": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+		      "cf"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "outputKeys": [
+\end_layout
+
+\begin_layout Plain Layout
+
+		      "utente"
+\end_layout
+
+\begin_layout Plain Layout
+
+	    ],
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "timeoutPolicy": "TIME_OUT_WF",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryLogic": "FIXED",
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "retryDelaySeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "responseTimeoutSeconds": 60,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "concurrentExecLimit": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+	    "inputTemplate": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Workflows
+\end_layout
+
+\begin_layout Standard
+Dopo aver definito i vari task abbiamo definito due diversi workflow :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/definizioneWorkflow.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Workflow definiti
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+workflowGet : per la realizzazione di tale workflow si è fatto uso non solo
+ di task da noi definiti, ma anche di alcuni system task ovvero 
+\begin_inset Quotes eld
+\end_inset
+
+Decision
+\begin_inset Quotes erd
+\end_inset
+
+ , 
+\begin_inset Quotes eld
+\end_inset
+
+Fork
+\begin_inset Quotes erd
+\end_inset
+
+ e 
+\begin_inset Quotes eld
+\end_inset
+
+Join
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In particolare questo workflow definisce il flusso per poter realizzare
+ le seguenti funzionalità :
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Effettuare una chiamata ad un singolo servizio tra Salute-Info-Lavoro per
+ ricevere informazioni relative ad un utente.
+\end_layout
+
+\begin_layout Itemize
+Effettuare delle chiamate in maniera parallela ai tre servizi disponibili
+ per ricevere tutte le informazioni disponibili relative ad un utente.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+workflowPost : tale workflow definisce il flusso per poter realizzare le
+ seguenti funzionalità :
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Effettuare una chiamata ad un singolo servizio tra Salute-Info-Lavoro per
+ poter registrare le informazioni relative ad un utente.
+\end_layout
+
+\begin_layout Itemize
+Effettuare delle chiamate in maniera parallela ai tre servizi disponibili,
+ distrubuendo le varie informazioni relative ad un utente al fine registrarle.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Di seguito è riportato il codice e lo schema relativo ad ogni workflow:
+\end_layout
+
+\begin_layout Standard
+Per creare i workflows si è utilizzata l'interfaccia grafica Swagger, in
+ paricolare i passi eseguiti sono i seguenti :
+\end_layout
+
+\begin_layout Itemize
+Collegarsi all'interfaccia Swagger localhost:8080
+\end_layout
+
+\begin_layout Itemize
+Tra le varie liste di operazioni disponibili selezionare il menù Metadata
+ Management
+\end_layout
+
+\begin_layout Itemize
+Selezionare 
+\begin_inset Quotes eld
+\end_inset
+
+Create new workflow definition
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Workflow Get
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  "ownerApp": "Orchestrazione",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "createTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "updateTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "createdBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "name": "workflowGET",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "description": "orchestrazione dei servizi",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "tasks": [
+\end_layout
+
+\begin_layout Plain Layout
+
+  {
+\end_layout
+
+\begin_layout Plain Layout
+
+	"name": "decision",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"taskReferenceName": "decision",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		"scelta": "${workflow.input.scelta}"
+\end_layout
+
+\begin_layout Plain Layout
+
+  },
+\end_layout
+
+\begin_layout Plain Layout
+
+	"type": "DECISION",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"caseValueParam": "scelta",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"decisionCases": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		"info": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+				  "name": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+	      	    "taskReferenceName": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+		         		"uri":  "http://172.17.0.1:8081/utente/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		          		"method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+		            }
+\end_layout
+
+\begin_layout Plain Layout
+
+                  },
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		}], 	
+\end_layout
+
+\begin_layout Plain Layout
+
+		"salute": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+				  "name": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"taskReferenceName": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+		         		"uri":  "http://172.17.0.1:8082/user/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		          		"method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+		            }
+\end_layout
+
+\begin_layout Plain Layout
+
+                  },
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		}],
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoro": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+					"name": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+      			  "taskReferenceName": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+		         		"uri":  "http://172.17.0.1:9090/users/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		          		"method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+		            }
+\end_layout
+
+\begin_layout Plain Layout
+
+                  },
+\end_layout
+
+\begin_layout Plain Layout
+
+      			"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		}],
+\end_layout
+
+\begin_layout Plain Layout
+
+		"all": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+			"name": "fork_join",
+\end_layout
+
+\begin_layout Plain Layout
+
+       	 "taskReferenceName": "forktask",
+\end_layout
+
+\begin_layout Plain Layout
+
+		    "type": "FORK_JOIN",
+\end_layout
+
+\begin_layout Plain Layout
+
+		    "forkTasks": [
+\end_layout
+
+\begin_layout Plain Layout
+
+		    [{
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	"name": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	"taskReferenceName": "richiestaPBRef",
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    	"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:8081/utente/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+						 "method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+			        }
+\end_layout
+
+\begin_layout Plain Layout
+
+			    },
+\end_layout
+
+\begin_layout Plain Layout
+
+			    "type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		    }],
+\end_layout
+
+\begin_layout Plain Layout
+
+			[{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+      		  "taskReferenceName": "richiestaAslRef",
+\end_layout
+
+\begin_layout Plain Layout
+
+      		  "inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    	"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:8082/user/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+				     	"method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+				    }
+\end_layout
+
+\begin_layout Plain Layout
+
+                 },
+\end_layout
+
+\begin_layout Plain Layout
+
+      		   "type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+            }],
+\end_layout
+
+\begin_layout Plain Layout
+
+			[{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"taskReferenceName": "richiestaCollocamentoRef",
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:9090/users/${workflow.input.cf}",
+\end_layout
+
+\begin_layout Plain Layout
+
+				  		"method": "GET"
+\end_layout
+
+\begin_layout Plain Layout
+
+				        }
+\end_layout
+
+\begin_layout Plain Layout
+
+                        	},
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+           			}]
+\end_layout
+
+\begin_layout Plain Layout
+
+    		]},
+\end_layout
+
+\begin_layout Plain Layout
+
+    			{
+\end_layout
+
+\begin_layout Plain Layout
+
+       			   "name": "joint",
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"taskReferenceName": "joint",
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"type": "JOIN",
+\end_layout
+
+\begin_layout Plain Layout
+
+      				"joinOn" :[
+\end_layout
+
+\begin_layout Plain Layout
+
+            				"richiestaPBRef",
+\end_layout
+
+\begin_layout Plain Layout
+
+            				"richiestaAslRef",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"richiestaCollocamentoRef"
+\end_layout
+
+\begin_layout Plain Layout
+
+             		]
+\end_layout
+
+\begin_layout Plain Layout
+
+      			}]
+\end_layout
+
+\begin_layout Plain Layout
+
+	 		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	 	}],
+\end_layout
+
+\begin_layout Plain Layout
+
+    "outputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"infoU": "${richiestaPB.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"saluteU": "${richiestaAsl.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoroU": "${richiestaCollocamento.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"infoAll": "${richiestaPBRef.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"saluteAll": "${richiestaAslRef.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoroAll": "${richiestaCollocamentoRef.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	},
+\end_layout
+
+\begin_layout Plain Layout
+
+    "schemaVersion": 2
+\end_layout
+
+\begin_layout Plain Layout
+
+}]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/workflowGET.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+WorkflowGet
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Workflow Post
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  "ownerApp": "Orchestrazione",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "createTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "updateTime": 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "createdBy": "MAP",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "name": "WorkFPostAPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "description": "orchestrazione dei servizi",
+\end_layout
+
+\begin_layout Plain Layout
+
+  "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+  "tasks": [
+\end_layout
+
+\begin_layout Plain Layout
+
+    {
+\end_layout
+
+\begin_layout Plain Layout
+
+	"name": "decision",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"taskReferenceName": "decision",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		"scelta": "${workflow.input.scelta}"
+\end_layout
+
+\begin_layout Plain Layout
+
+	 	},
+\end_layout
+
+\begin_layout Plain Layout
+
+	"type": "DECISION",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"caseValueParam": "scelta",
+\end_layout
+
+\begin_layout Plain Layout
+
+	"decisionCases": { 
+\end_layout
+
+\begin_layout Plain Layout
+
+		"info": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"taskReferenceName": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+					"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:8081/aggiungi",
+\end_layout
+
+\begin_layout Plain Layout
+
+				  		"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cf": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"indirizzo": "${workflow.input.indirizzo}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"numerofisso": "${workflow.input.numFisso}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cellulare": "${workflow.input.cellulare}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"email": "${workflow.input.email}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+				 },
+\end_layout
+
+\begin_layout Plain Layout
+
+				 "type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		}], 	
+\end_layout
+
+\begin_layout Plain Layout
+
+		"salute": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+		   		"taskReferenceName": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+		  		"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+						"uri":  "http://172.17.0.1:8082/user/add",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"dataNascita": "${workflow.input.dataNascita}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"sesso": "${workflow.input.sesso}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"codiceFiscale": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"medicoBase": "${workflow.input.medicoBase}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+			       	},
+\end_layout
+
+\begin_layout Plain Layout
+
+		      		"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+	 		}],
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoro": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"taskReferenceName": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:9090/users/add",
+\end_layout
+
+\begin_layout Plain Layout
+
+				  		"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cfis": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"data_nascita": "${workflow.input.dataNascita}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"lavoro_attuale": "${workflow.input.lavoroAtt}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"lavoro_precedente": "${workflow.input.lavoroPrec}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+			       	},
+\end_layout
+
+\begin_layout Plain Layout
+
+					"type": "HTTP" 		
+\end_layout
+
+\begin_layout Plain Layout
+
+		}],
+\end_layout
+
+\begin_layout Plain Layout
+
+		"all": [{
+\end_layout
+
+\begin_layout Plain Layout
+
+			 "name": "fork_join",
+\end_layout
+
+\begin_layout Plain Layout
+
+ 			"taskReferenceName": "forktask",
+\end_layout
+
+\begin_layout Plain Layout
+
+			 "type": "FORK_JOIN",
+\end_layout
+
+\begin_layout Plain Layout
+
+		     "forkTasks": [
+\end_layout
+
+\begin_layout Plain Layout
+
+				[{
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	"name": "richiestaPB",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"taskReferenceName": "richiestaPBPar",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+					"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:8081/aggiungi",
+\end_layout
+
+\begin_layout Plain Layout
+
+				  		"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cf": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"indirizzo": "${workflow.input.indirizzo}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"numerofisso": "${workflow.input.numFisso}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cellulare": "${workflow.input.cellulare}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"email": "${workflow.input.email}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+				 },
+\end_layout
+
+\begin_layout Plain Layout
+
+				      	"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+			}],
+\end_layout
+
+\begin_layout Plain Layout
+
+			[{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaAsl",
+\end_layout
+
+\begin_layout Plain Layout
+
+		   		"taskReferenceName": "richiestaAslPar",
+\end_layout
+
+\begin_layout Plain Layout
+
+		  		"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+						"uri":  "http://172.17.0.1:8082/user/add",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"dataNascita": "${workflow.input.dataNascita}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"sesso": "${workflow.input.sesso}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"codiceFiscale": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"medicoBase": "${workflow.input.medicoBase}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+			       	},
+\end_layout
+
+\begin_layout Plain Layout
+
+		      			"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		        		 	}],
+\end_layout
+
+\begin_layout Plain Layout
+
+			[{
+\end_layout
+
+\begin_layout Plain Layout
+
+				"name": "richiestaCollocamento",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"taskReferenceName": "richiestaCollocamentoPar",
+\end_layout
+
+\begin_layout Plain Layout
+
+				"inputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+			    		"http_request":{
+\end_layout
+
+\begin_layout Plain Layout
+
+				 		"uri":  "http://172.17.0.1:9090/users/add",
+\end_layout
+
+\begin_layout Plain Layout
+
+				  		"method": "POST",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"contentType": "application/json",
+\end_layout
+
+\begin_layout Plain Layout
+
+						"body":{
+\end_layout
+
+\begin_layout Plain Layout
+
+							"nome": "${workflow.input.nome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cognome": "${workflow.input.cognome}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"cfis": "${workflow.input.codiceFiscale}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"data_nascita": "${workflow.input.dataNascita}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"lavoro_attuale": "${workflow.input.lavoroAtt}",
+\end_layout
+
+\begin_layout Plain Layout
+
+							"lavoro_precedente": "${workflow.input.lavoroPrec}"
+\end_layout
+
+\begin_layout Plain Layout
+
+						}
+\end_layout
+
+\begin_layout Plain Layout
+
+					}
+\end_layout
+
+\begin_layout Plain Layout
+
+			       	},
+\end_layout
+
+\begin_layout Plain Layout
+
+					"type": "HTTP"
+\end_layout
+
+\begin_layout Plain Layout
+
+		   	}]
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	]},
+\end_layout
+
+\begin_layout Plain Layout
+
+		    	{
+\end_layout
+
+\begin_layout Plain Layout
+
+		       		"name": "joint",
+\end_layout
+
+\begin_layout Plain Layout
+
+		      		"taskReferenceName": "joint",
+\end_layout
+
+\begin_layout Plain Layout
+
+		      		"type": "JOIN",
+\end_layout
+
+\begin_layout Plain Layout
+
+		      		"joinOn" :[
+\end_layout
+
+\begin_layout Plain Layout
+
+		       			"richiestaPBPar",
+\end_layout
+
+\begin_layout Plain Layout
+
+		       			"richiestaAslPar",
+\end_layout
+
+\begin_layout Plain Layout
+
+					"richiestaCollocamentoPar"
+\end_layout
+
+\begin_layout Plain Layout
+
+				]
+\end_layout
+
+\begin_layout Plain Layout
+
+	 			}]
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}],
+\end_layout
+
+\begin_layout Plain Layout
+
+    "outputParameters": {
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"infoU": "${richiestaPB.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"saluteU": "${richiestaAsl.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoroU": "${richiestaCollocamento.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"infoAll": "${richiestaPBPar.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+    	"saluteAll": "${richiestaAslPar.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+		"lavoroAll": "${richiestaCollocamentoPar.output.response.body}",
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	},
+\end_layout
+
+\begin_layout Plain Layout
+
+  "schemaVersion": 2 }
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/workflowPOST.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+WorkflowPost
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Esempi di esecuzione
+\end_layout
+
+\begin_layout Standard
+In tale sezione sono riportati alcuni esempi di utilizzo dei servizi , task
+ e workflow creati.
+ In particolare di seguito sono riportati i passi generici per poter effettuare
+ una richiesta :
+\end_layout
+
+\begin_layout Itemize
+Collegarsi all'interfaccia Swagger localhost:8080
+\end_layout
+
+\begin_layout Itemize
+Tra le varie liste di operazioni disponibili selezionare il menù Workflow
+ Management
+\end_layout
+
+\begin_layout Itemize
+Selezionare 
+\begin_inset Quotes eld
+\end_inset
+
+Start a new workflow with StartWorkflowRequest, which allows task to be
+ executed in a domain
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Richiesta informazioni Salute 
+\end_layout
+
+\begin_layout Standard
+Esempio di richiesta al servizio Asl:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    "name": "workflowGET",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    "input": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		"scelta": "salute",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "cf": "GRVMHL94"
+\end_layout
+
+\begin_layout Plain Layout
+
+                },
+\end_layout
+
+\begin_layout Plain Layout
+
+    "taskToDomain": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EsempioGETSalute.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Workflow richiesta Asl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiGETAsl.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Input/Output richiesta asl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Esempio di richiesta ai servizi Asl, Pagine Bianche e Collocamento:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    "name": "workflowGET",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    "input": {
+\end_layout
+
+\begin_layout Plain Layout
+
+		"scelta": "all",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "cf": "GRVMHL94"
+\end_layout
+
+\begin_layout Plain Layout
+
+                },
+\end_layout
+
+\begin_layout Plain Layout
+
+    "taskToDomain": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EsempioGETAll.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Workflow richiesta Asl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiGETAll1.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiGETAll2.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiGETAll3.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Input/Output richiesta asl, pagine bianche e collocamento
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Esempio di richiesta di memorizzazione nuovo utente al servizio Asl:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    "name": "workflowPOST",
+\end_layout
+
+\begin_layout Plain Layout
+
+   "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    "input": {
+\end_layout
+
+\begin_layout Plain Layout
+
+	  "scelta": "salute",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "codiceFiscale": "GLLANN91",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "nome": "Anna",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "cognome": "Galli",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "dataNascita": "23/09/1991",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "indirizzo": "via Napoli",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "email": "anna@liber.it",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "lavoroPrec": "disoccupata",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "lavoroAtt":  "impiegata",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "medicoBase": "Giovanni Marsico",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "sesso": "femmina",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "numFisso": "0825884384",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "cellulare": "3425678456"
+\end_layout
+
+\begin_layout Plain Layout
+
+   },
+\end_layout
+
+\begin_layout Plain Layout
+
+    "taskToDomain": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+   }
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EsempioPOSTSalute.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Workflow richiesta salvataggio utente Asl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiPOSTAsl.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Input/Output richiesta asl
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Esempio di richiesta di memorizzazione nuovo utente ai servizi Asl, Pagine
+ Bianche e Collocamento :
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[language=json,firstnumber=1]
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    "name": "workflowPOST",
+\end_layout
+
+\begin_layout Plain Layout
+
+   "version": 1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    "input": {
+\end_layout
+
+\begin_layout Plain Layout
+
+	  "scelta": "all",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "codiceFiscale": "GLLANN91",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "nome": "Anna",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "cognome": "Galli",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "dataNascita": "23/09/1991",
+\end_layout
+
+\begin_layout Plain Layout
+
+      "indirizzo": "via Napoli",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "email": "anna@liber.it",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "lavoroPrec": "disoccupata",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "lavoroAtt":  "impiegata",
+\end_layout
+
+\begin_layout Plain Layout
+
+       "medicoBase": "Giovanni Marsico",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "sesso": "femmina",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "numFisso": "0825884384",
+\end_layout
+
+\begin_layout Plain Layout
+
+        "cellulare": "3425678456"
+\end_layout
+
+\begin_layout Plain Layout
+
+   },
+\end_layout
+
+\begin_layout Plain Layout
+
+    "taskToDomain": {}
+\end_layout
+
+\begin_layout Plain Layout
+
+   }
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/EsempioPOSTAll.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Workflow richiesta salvataggio utente Asl, Pagine Bianche e Collocamento
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/risultatiPOSTAll.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Input/Output richiesta asl, pagine bianche e collocamento
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
