@@ -176,6 +176,7 @@ morecomment=[s]{--}
 \begin_layout Standard
 \begin_inset Graphics
 	filename img/conductor.PNG
+	scale 70
 	rotateOrigin center
 
 \end_inset
@@ -722,12 +723,12 @@ Come già detto in precedenza per poter realizzare un workflow è necessario
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename img/definizioneTask.JPG
-	scale 80
+	scale 50
 
 \end_inset
 
@@ -795,6 +796,11 @@ Create new task definition(s)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Un'alternativa all'interfaccia grafica consiste nell'eseguire la richiesta
+ HTTP suggerita dall'operazione (in questo caso una PUT).
 \end_layout
 
 \begin_layout Standard
@@ -1254,11 +1260,12 @@ Dopo aver definito i vari task abbiamo definito due diversi workflow :
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename img/definizioneWorkflow.JPG
+	scale 50
 
 \end_inset
 
@@ -1374,6 +1381,11 @@ Create new workflow definition
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Un'alternativa all'interfaccia grafica consiste nell'eseguire la richiesta
+ HTTP suggerita dall'operazione (in questo caso una PUT).
 \end_layout
 
 \begin_layout Subsubsection
@@ -3078,8 +3090,8 @@ Input/Output richiesta asl
 
 \end_layout
 
-\begin_layout Standard
-Esempio di richiesta ai servizi Asl, Pagine Bianche e Collocamento:
+\begin_layout Subsubsection
+Richiesta ai servizi Asl, Pagine Bianche e Collocamento:
 \end_layout
 
 \begin_layout Standard
@@ -3234,8 +3246,8 @@ Input/Output richiesta asl, pagine bianche e collocamento
 
 \end_layout
 
-\begin_layout Standard
-Esempio di richiesta di memorizzazione nuovo utente al servizio Asl:
+\begin_layout Subsubsection
+Richiesta di memorizzazione nuovo utente al servizio Asl:
 \end_layout
 
 \begin_layout Standard
@@ -3427,9 +3439,9 @@ Input/Output richiesta asl
 
 \end_layout
 
-\begin_layout Standard
-Esempio di richiesta di memorizzazione nuovo utente ai servizi Asl, Pagine
- Bianche e Collocamento :
+\begin_layout Subsubsection
+Richiesta di memorizzazione nuovo utente ai servizi Asl, Pagine Bianche
+ e Collocamento :
 \end_layout
 
 \begin_layout Standard
